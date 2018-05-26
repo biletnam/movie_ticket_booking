@@ -1,0 +1,70 @@
+<div class="ticket-booking-container">
+  <h4 style="text-align: center; font-weight: bold;">MOVIE SEAT RESERVATION</h4>
+  <div class="row">
+    <div class="col-8 offset-3">
+      <mat-form-field style="width: 30%">
+        <input [(ngModel)]="reservation.name" matInput placeholder="Enter Name">
+      </mat-form-field>
+
+      <mat-form-field style="width: 15%; padding-left: 80px">
+        <input [(ngModel)]="reservation.numberOfSeats" type="number" matInput placeholder="Number of seats">
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row">
+    <div class="offset-5">
+      <button type="button" [disabled]="!reservation.name || !reservation.numberOfSeats" (click)="enableCheckBox = true"
+              color="primary"  style="background-color: #E0E0E0; margin-bottom: 10px" mat-button>Start Selecting</button>
+    </div>
+  </div>
+
+
+  <div class="col-5 screen text-center">SCREEN</div>
+
+  <div style="padding-left: 20%;">
+    <div class="row" *ngFor="let row of layout">
+      <p style="width: 80px;" *ngIf="row.key !== 'row'"><strong>{{row.key}}</strong></p>
+      <div style="width: 80px" *ngIf="row.key === 'row'"></div>
+
+      <div *ngFor="let column of row.value">
+        <div *ngIf="row.key" style="width: 60px;">
+          <p *ngIf="row.key === 'row'">{{column.seatNo}}</p>
+          <mat-checkbox [(ngModel)]="column.selected" *ngIf="column.seatNo && row.key !== 'row'" [color]="column.reserved ? 'warn' : 'primary'"
+                        (change)="selectSeats(row.key, column)" [disabled]="(!enableCheckBox && column.reserved)"></mat-checkbox>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="offset-5">
+      <button (click)="reserveSeats();enableCheckBox = false;" color="primary" mat-button style="background-color: #E0E0E0">Confirm Selection</button>
+    </div>
+  </div>
+
+  <div class="row" style="padding-top:25px">
+    <div class="col-9 offset-1">
+    <table class="table table-bordered">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">No of Seats</th>
+        <th scope="col">Seats</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let reservation of seatReservations; index as reservationIndex">
+        <th scope="row">{{reservationIndex}}</th>
+        <td>{{reservation.name}}</td>
+        <td>{{reservation.numberOfSeats}}</td>
+        <td>
+          <span *ngFor="let seat of reservation.seats">{{seat.seatColumn}}{{seat.seatRow}}, </span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</div>
+
