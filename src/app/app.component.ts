@@ -37,20 +37,17 @@ export class AppComponent {
   public selectSeats(row, column) {
     if (column.selected) {
       this.reservation.seats.push({seatRow: row, seatColumn: column.seatNo});
-      console.log(this.reservation);
     } else {
       const tempObj = {seatRow: row, seatColumn: column.seatNo};
       this.reservation.seats = this.reservation.seats.filter(value => (
         (value.seatRow !== tempObj.seatRow) && (value.seatColumn !== tempObj.seatColumn)));
-      console.log(this.reservation);
     }
   }
   public reserveSeats() {
     this.reservation.seats.forEach(seat => {
-      let test = this.layout.filter(value => value.key === seat.seatRow)[0].value.filter(column => column.selected).map(item => {
+      this.layout.filter(value => value.key === seat.seatRow)[0].value.filter(column => column.selected).map(item => {
         item.reserved = true;
       });
-      console.log(this.layout);
     });
     this.seatReservations.push(this.reservation);
     this.resetReservation();
@@ -58,6 +55,15 @@ export class AppComponent {
 
   public resetReservation() {
     this.reservation = { seats: [], name: null, numberOfSeats: null };
+  }
+
+  public disableSeat(reserved): Boolean {
+    if (reserved) {
+      return true;
+    } else {
+      return !this.enableCheckBox;
+    }
+    // return true;
   }
 
 }

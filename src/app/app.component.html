@@ -30,7 +30,7 @@
         <div *ngIf="row.key" style="width: 60px;">
           <p *ngIf="row.key === 'row'">{{column.seatNo}}</p>
           <mat-checkbox [(ngModel)]="column.selected" *ngIf="column.seatNo && row.key !== 'row'" [color]="column.reserved ? 'warn' : 'primary'"
-                        (change)="selectSeats(row.key, column)" [disabled]="(!enableCheckBox && column.reserved)"></mat-checkbox>
+                        (change)="selectSeats(row.key, column)" [disabled]="disableSeat(column.reserved)"></mat-checkbox>
         </div>
       </div>
     </div>
